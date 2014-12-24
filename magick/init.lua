@@ -344,7 +344,8 @@ do
     end,
     resize = function(self, w, h, f, blur)
       if f == nil then
-        f = "Lanczos2"
+        --f = "Lanczos2"
+        f = "Undefined"
       end
       if blur == nil then
         blur = 1.0
@@ -544,7 +545,11 @@ end
 local thumb
 thumb = function(img, size_str, output)
   if type(img) == "string" then
-    img = assert(load_image(img))
+    --img = assert(load_image(img))
+    img, code, msg = load_image(img)
+    if not img then
+        return nil, msg, code
+    end
   end
   local src_w, src_h = img:get_width(), img:get_height()
   local opts = parse_size_str(size_str, src_w, src_h)
@@ -570,5 +575,6 @@ return {
   thumb = thumb,
   Image = Image,
   parse_size_str = parse_size_str,
+  get_exception = get_exception,
   VERSION = VERSION
 }
